@@ -79,6 +79,10 @@ public class GUI extends JFrame
         totalByCurrencyAllTextPane = new javax.swing.JScrollPane();
         totalByCurrencyAllTextArea = new javax.swing.JTextArea();
         totalByCountryAll = new javax.swing.JPanel();
+        totalByCountryAllLabel = new javax.swing.JLabel();
+        totalByCountryAllButton = new javax.swing.JButton();
+        totalByCountryAllTextPane = new javax.swing.JScrollPane();
+        totalByCountryAllTextArea = new javax.swing.JTextArea();
         listAllCards = new javax.swing.JPanel();
 
         javax.swing.GroupLayout sp1Layout = new javax.swing.GroupLayout(sp1);
@@ -528,15 +532,45 @@ public class GUI extends JFrame
 
         multiTabPane.addTab("Total by Currency", totalByCurrency);
 
+        totalByCountryAllLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        totalByCountryAllLabel.setText("See Total spent by Country for all Cards");
+
+        totalByCountryAllButton.setText("Get Total Spent by Country for all Cards");
+        totalByCountryAllButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                totalByCountryAllButtonMouseClicked(evt);
+            }
+        });
+
+        totalByCountryAllTextArea.setColumns(20);
+        totalByCountryAllTextArea.setRows(5);
+        totalByCountryAllTextPane.setViewportView(totalByCountryAllTextArea);
+
         javax.swing.GroupLayout totalByCountryAllLayout = new javax.swing.GroupLayout(totalByCountryAll);
         totalByCountryAll.setLayout(totalByCountryAllLayout);
         totalByCountryAllLayout.setHorizontalGroup(
             totalByCountryAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 726, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, totalByCountryAllLayout.createSequentialGroup()
+                .addGap(233, 233, 233)
+                .addGroup(totalByCountryAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(totalByCountryAllTextPane)
+                    .addComponent(totalByCountryAllButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+                .addGap(234, 234, 234))
+            .addGroup(totalByCountryAllLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(totalByCountryAllLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         totalByCountryAllLayout.setVerticalGroup(
             totalByCountryAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 533, Short.MAX_VALUE)
+            .addGroup(totalByCountryAllLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(totalByCountryAllLabel)
+                .addGap(73, 73, 73)
+                .addComponent(totalByCountryAllButton)
+                .addGap(18, 18, 18)
+                .addComponent(totalByCountryAllTextPane, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         multiTabPane.addTab("Total Spent by Country", totalByCountryAll);
@@ -560,7 +594,7 @@ public class GUI extends JFrame
             allCardsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(allCardsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(multiTabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
+                .addComponent(multiTabPane)
                 .addContainerGap())
         );
         allCardsPanelLayout.setVerticalGroup(
@@ -832,24 +866,16 @@ public class GUI extends JFrame
         // Loop over each purchase on the card
         for(Purchase p : temp)
         {
-            if(countriesSpentIn.isEmpty())
+            // Check if the country the purchase was made in is in the list
+            if (countriesSpentIn.contains(p.getCountry()))
+            {
+                amountSpentInCountry[countriesSpentIn.indexOf(p.getCountry())] += p.getAmount();
+            }
+            // Otherwise, add the country to the list and increase the amount spent in it
+            else
             {
                 countriesSpentIn.add(p.getCountry());
                 amountSpentInCountry[countriesSpentIn.indexOf(p.getCountry())] += p.getAmount();
-            }
-            else
-            {
-                // Check if the country the purchase was made in is in the list
-                if (countriesSpentIn.contains(p.getCountry()))
-                {
-                    amountSpentInCountry[countriesSpentIn.indexOf(p.getCountry())] += p.getAmount();
-                }
-                // Otherwise, add the country to the list and increase the amount spent in it
-                else
-                {
-                    countriesSpentIn.add(p.getCountry());
-                    amountSpentInCountry[countriesSpentIn.indexOf(p.getCountry())] += p.getAmount();
-                }
             }
         }
 
@@ -971,6 +997,62 @@ public class GUI extends JFrame
         totalByCurrencyAllTextArea.setText(totalOfEach);
     }//GEN-LAST:event_totalByCurrencyAllButtonMouseClicked
 
+    // See total spent by country for all cards
+    private void totalByCountryAllButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_totalByCountryAllButtonMouseClicked
+        // Check if cards have been added to the program
+        if(cards.size() < 1)
+        {
+            totalByCountryAllLabel.setText("No cards found!");
+            return;
+        }
+        
+        // Create variables needed for function
+        ArrayList<String> countriesSpentIn = new ArrayList<String>();
+        ArrayList<Purchase> temp;
+        double[] amountSpentInCountry = new double[10];
+        
+        // Clear text area
+        totalByCountryAllTextArea.setText("");
+        
+        for(Card card : cards)
+        {
+            temp = card.getPurchases();
+            // Check if purchases have been made in card
+            if(temp.isEmpty())
+            {
+                continue;
+            }
+            
+            // Loop over each purchase on the card
+            for(Purchase p : temp)
+            {
+                // Check if the country the purchase was made in is in the list
+                if (countriesSpentIn.contains(p.getCountry()))
+                {
+                    amountSpentInCountry[countriesSpentIn.indexOf(p.getCountry())] += p.getAmount();
+                }
+                // Otherwise, add the country to the list and increase the amount spent in it
+                else
+                {
+                    countriesSpentIn.add(p.getCountry());
+                    amountSpentInCountry[countriesSpentIn.indexOf(p.getCountry())] += p.getAmount();
+                }
+            }
+        }
+        
+        // Format the result for displaying
+        String result = "--Total Spent by Country for all Cards--\n";
+        for(String country : countriesSpentIn)
+        {
+            result += String.format("%s: %.2f\n",
+              country, amountSpentInCountry[countriesSpentIn.indexOf(country)]);
+        }
+        
+        // Display the result
+        totalByCountryAllTextArea.setText(result);
+        totalByCountryAllLabel.setText("Results found.");
+    }//GEN-LAST:event_totalByCountryAllButtonMouseClicked
+
     // Method to populate card lists
     private ComboBoxModel getCardList()
     {
@@ -1082,6 +1164,10 @@ public class GUI extends JFrame
     private javax.swing.JTabbedPane singleTabPane;
     private javax.swing.JPanel sp1;
     private javax.swing.JPanel totalByCountryAll;
+    private javax.swing.JButton totalByCountryAllButton;
+    private javax.swing.JLabel totalByCountryAllLabel;
+    private javax.swing.JTextArea totalByCountryAllTextArea;
+    private javax.swing.JScrollPane totalByCountryAllTextPane;
     private javax.swing.JButton totalByCountryButton;
     private javax.swing.JLabel totalByCountryLabel;
     private javax.swing.JComboBox<String> totalByCountryList;
