@@ -26,7 +26,7 @@ public class GUI extends JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        sp1 = new javax.swing.JPanel();
+        listCardsButtonGroup = new javax.swing.ButtonGroup();
         mainTabPane = new javax.swing.JTabbedPane();
         singleCardPanel = new javax.swing.JPanel();
         singleTabPane = new javax.swing.JTabbedPane();
@@ -84,17 +84,12 @@ public class GUI extends JFrame
         totalByCountryAllTextPane = new javax.swing.JScrollPane();
         totalByCountryAllTextArea = new javax.swing.JTextArea();
         listAllCards = new javax.swing.JPanel();
-
-        javax.swing.GroupLayout sp1Layout = new javax.swing.GroupLayout(sp1);
-        sp1.setLayout(sp1Layout);
-        sp1Layout.setHorizontalGroup(
-            sp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 340, Short.MAX_VALUE)
-        );
-        sp1Layout.setVerticalGroup(
-            sp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 496, Short.MAX_VALUE)
-        );
+        listCardsLabel = new javax.swing.JLabel();
+        listCardsButton = new javax.swing.JButton();
+        listCardsRadioButton1 = new javax.swing.JRadioButton();
+        listCardsRadioButton2 = new javax.swing.JRadioButton();
+        listCardsTextPane = new javax.swing.JScrollPane();
+        listCardsTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -575,15 +570,58 @@ public class GUI extends JFrame
 
         multiTabPane.addTab("Total Spent by Country", totalByCountryAll);
 
+        listCardsLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        listCardsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        listCardsLabel.setText("List all Cards");
+
+        listCardsButton.setText("List all Cards by Selected Order");
+        listCardsButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listCardsButtonMouseClicked(evt);
+            }
+        });
+
+        listCardsButtonGroup.add(listCardsRadioButton1);
+        listCardsRadioButton1.setSelected(true);
+        listCardsRadioButton1.setText("by Order Created");
+
+        listCardsButtonGroup.add(listCardsRadioButton2);
+        listCardsRadioButton2.setText("by Value");
+
+        listCardsTextArea.setColumns(20);
+        listCardsTextArea.setRows(5);
+        listCardsTextPane.setViewportView(listCardsTextArea);
+
         javax.swing.GroupLayout listAllCardsLayout = new javax.swing.GroupLayout(listAllCards);
         listAllCards.setLayout(listAllCardsLayout);
         listAllCardsLayout.setHorizontalGroup(
             listAllCardsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 726, Short.MAX_VALUE)
+            .addGroup(listAllCardsLayout.createSequentialGroup()
+                .addGap(233, 233, 233)
+                .addGroup(listAllCardsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(listAllCardsLayout.createSequentialGroup()
+                        .addComponent(listCardsRadioButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(listCardsRadioButton2))
+                    .addComponent(listCardsLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(listCardsTextPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                    .addComponent(listCardsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(234, 234, 234))
         );
         listAllCardsLayout.setVerticalGroup(
             listAllCardsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 533, Short.MAX_VALUE)
+            .addGroup(listAllCardsLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(listCardsLabel)
+                .addGap(73, 73, 73)
+                .addGroup(listAllCardsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(listCardsRadioButton1)
+                    .addComponent(listCardsRadioButton2))
+                .addGap(18, 18, 18)
+                .addComponent(listCardsButton)
+                .addGap(18, 18, 18)
+                .addComponent(listCardsTextPane, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         multiTabPane.addTab("List All Cards", listAllCards);
@@ -1053,6 +1091,50 @@ public class GUI extends JFrame
         totalByCountryAllLabel.setText("Results found.");
     }//GEN-LAST:event_totalByCountryAllButtonMouseClicked
 
+    // List all cards by the selected order
+    private void listCardsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listCardsButtonMouseClicked
+        // Check if there are cards
+        if(cards.size() < 1)
+        {
+            listCardsLabel.setText("No cards found!");
+            return;
+        }
+        
+        // Clear text area
+        listCardsTextArea.setText("");
+        
+        // Determine way to order list of cards
+        String cardList = "";
+        
+        if(listCardsRadioButton1.isSelected())
+        {
+            cardList += "--All Cards Ordered by Creation Asc.--\n";
+            for(Card card : cards)
+            {
+                cardList += String.format("-Card %s-\nName: %s\nValue: $%.2f AUD\n\n",
+                        card.getID(), card.getName(), card.getBalance());
+            }
+        }
+        else
+        {
+            // Create a temporary list of cards and sort them by value
+            ArrayList<Card> temp = cards;
+            Collections.sort(temp);
+            
+            cardList += "--All Cards Ordered by Value Asc.--\n";
+            
+            for(Card card : temp)
+            {
+                cardList += String.format("-Card %s-\nName: %s\nValue: $%.2f AUD\n\n",
+                        card.getID(), card.getName(), card.getBalance());
+            }
+        }
+        
+        // Update the GUI to show list of cards
+        listCardsTextArea.setText(cardList);
+        listCardsLabel.setText("Results found.");
+    }//GEN-LAST:event_listCardsButtonMouseClicked
+
     // Method to populate card lists
     private ComboBoxModel getCardList()
     {
@@ -1129,6 +1211,13 @@ public class GUI extends JFrame
     private javax.swing.JComboBox<String> createCardList;
     private javax.swing.JTextField createCardTextField;
     private javax.swing.JPanel listAllCards;
+    private javax.swing.JButton listCardsButton;
+    private javax.swing.ButtonGroup listCardsButtonGroup;
+    private javax.swing.JLabel listCardsLabel;
+    private javax.swing.JRadioButton listCardsRadioButton1;
+    private javax.swing.JRadioButton listCardsRadioButton2;
+    private javax.swing.JTextArea listCardsTextArea;
+    private javax.swing.JScrollPane listCardsTextPane;
     private javax.swing.JPanel loadCard;
     private javax.swing.JButton loadCardButton;
     private javax.swing.JLabel loadCardLabel;
@@ -1162,7 +1251,6 @@ public class GUI extends JFrame
     private javax.swing.JScrollPane showValueTextPane;
     private javax.swing.JPanel singleCardPanel;
     private javax.swing.JTabbedPane singleTabPane;
-    private javax.swing.JPanel sp1;
     private javax.swing.JPanel totalByCountryAll;
     private javax.swing.JButton totalByCountryAllButton;
     private javax.swing.JLabel totalByCountryAllLabel;
