@@ -70,6 +70,9 @@ public class GUI extends JFrame
         allCardsPanel = new javax.swing.JPanel();
         multiTabPane = new javax.swing.JTabbedPane();
         showValueAll = new javax.swing.JPanel();
+        showValueAllLabel2 = new javax.swing.JLabel();
+        showValueAllButton = new javax.swing.JButton();
+        showValueAllLabel1 = new javax.swing.JLabel();
         totalByCurrency = new javax.swing.JPanel();
         totalByCountryAll = new javax.swing.JPanel();
         listAllCards = new javax.swing.JPanel();
@@ -434,15 +437,43 @@ public class GUI extends JFrame
 
         mainTabPane.addTab("Single Card", singleCardPanel);
 
+        showValueAllLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        showValueAllLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        showValueAllLabel2.setText("Total Value of Cards: $0.00");
+
+        showValueAllButton.setText("Get Total Value for all Cards");
+        showValueAllButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showValueAllButtonMouseClicked(evt);
+            }
+        });
+
+        showValueAllLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        showValueAllLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        showValueAllLabel1.setText("Show Total Value for All Cards");
+
         javax.swing.GroupLayout showValueAllLayout = new javax.swing.GroupLayout(showValueAll);
         showValueAll.setLayout(showValueAllLayout);
         showValueAllLayout.setHorizontalGroup(
             showValueAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 725, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, showValueAllLayout.createSequentialGroup()
+                .addGap(233, 233, 233)
+                .addGroup(showValueAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(showValueAllLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                    .addComponent(showValueAllButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(showValueAllLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE))
+                .addGap(234, 234, 234))
         );
         showValueAllLayout.setVerticalGroup(
             showValueAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 533, Short.MAX_VALUE)
+            .addGroup(showValueAllLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(showValueAllLabel1)
+                .addGap(73, 73, 73)
+                .addComponent(showValueAllButton)
+                .addGap(73, 73, 73)
+                .addComponent(showValueAllLabel2)
+                .addContainerGap(285, Short.MAX_VALUE))
         );
 
         multiTabPane.addTab("Total Value", showValueAll);
@@ -838,6 +869,19 @@ public class GUI extends JFrame
         showValueList.setSelectedIndex(0);
     }//GEN-LAST:event_showValueButtonMouseClicked
 
+    // Get the total value for all cards
+    private void showValueAllButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showValueAllButtonMouseClicked
+        double total = 0;
+        
+        // Loop through each card and get its balance
+        for(Card card : cards)
+        {
+            total += card.getBalance();
+        }
+        
+        showValueAllLabel2.setText(String.format("Total Value of Cards: $%.2f", total));
+    }//GEN-LAST:event_showValueAllButtonMouseClicked
+
     // Method to populate card lists
     private ComboBoxModel getCardList()
     {
@@ -936,6 +980,9 @@ public class GUI extends JFrame
     private javax.swing.JTextArea purchaseHistoryTextArea;
     private javax.swing.JScrollPane purchaseHistoryTextPane;
     private javax.swing.JPanel showValueAll;
+    private javax.swing.JButton showValueAllButton;
+    private javax.swing.JLabel showValueAllLabel1;
+    private javax.swing.JLabel showValueAllLabel2;
     private javax.swing.JButton showValueButton;
     private javax.swing.JLabel showValueLabel;
     private javax.swing.JComboBox<String> showValueList;
