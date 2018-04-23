@@ -74,6 +74,10 @@ public class GUI extends JFrame
         showValueAllButton = new javax.swing.JButton();
         showValueAllLabel1 = new javax.swing.JLabel();
         totalByCurrency = new javax.swing.JPanel();
+        totalByCurrencyAllLabel = new javax.swing.JLabel();
+        totalByCurrencyAllButton = new javax.swing.JButton();
+        totalByCurrencyAllTextPane = new javax.swing.JScrollPane();
+        totalByCurrencyAllTextArea = new javax.swing.JTextArea();
         totalByCountryAll = new javax.swing.JPanel();
         listAllCards = new javax.swing.JPanel();
 
@@ -113,7 +117,7 @@ public class GUI extends JFrame
         createCardLayout.setHorizontalGroup(
             createCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(createCardLayout.createSequentialGroup()
-                .addContainerGap(233, Short.MAX_VALUE)
+                .addContainerGap(234, Short.MAX_VALUE)
                 .addGroup(createCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(createCardList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(createCardTextField)
@@ -162,7 +166,7 @@ public class GUI extends JFrame
         loadCardLayout.setHorizontalGroup(
             loadCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(loadCardLayout.createSequentialGroup()
-                .addContainerGap(233, Short.MAX_VALUE)
+                .addContainerGap(234, Short.MAX_VALUE)
                 .addGroup(loadCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(loadCardList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(loadCardTextField)
@@ -230,7 +234,7 @@ public class GUI extends JFrame
         makePurchaseLayout.setHorizontalGroup(
             makePurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(makePurchaseLayout.createSequentialGroup()
-                .addContainerGap(233, Short.MAX_VALUE)
+                .addContainerGap(234, Short.MAX_VALUE)
                 .addGroup(makePurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(makePurchaseCardList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(makePurchaseCountryTF)
@@ -293,7 +297,7 @@ public class GUI extends JFrame
                 .addGap(233, 233, 233)
                 .addGroup(purchaseHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(purchaseHistoryLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(purchaseHistoryTextPane, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                    .addComponent(purchaseHistoryTextPane, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
                     .addComponent(purchaseHistoryList, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(purchaseHistoryButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(234, 234, 234))
@@ -343,7 +347,7 @@ public class GUI extends JFrame
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, totalByCountrySingleLayout.createSequentialGroup()
                 .addGap(233, 233, 233)
                 .addGroup(totalByCountrySingleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(totalByCountryTextPane, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                    .addComponent(totalByCountryTextPane, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
                     .addComponent(totalByCountryList, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(totalByCountryButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(234, 234, 234))
@@ -370,7 +374,7 @@ public class GUI extends JFrame
 
         showValueLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         showValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        showValueLabel.setText("Show Value for Selected Card");
+        showValueLabel.setText("See Value for Selected Card");
 
         showValueList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Card...", " " }));
         showValueList.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -398,7 +402,7 @@ public class GUI extends JFrame
                 .addGap(233, 233, 233)
                 .addGroup(showValueSingleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(showValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(showValueTextPane, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                    .addComponent(showValueTextPane, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
                     .addComponent(showValueList, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(showValueButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(234, 234, 234))
@@ -439,7 +443,7 @@ public class GUI extends JFrame
 
         showValueAllLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         showValueAllLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        showValueAllLabel2.setText("Total Value of Cards: $0.00");
+        showValueAllLabel2.setText("Total Value of Cards: $0.00 AUD");
 
         showValueAllButton.setText("Get Total Value for all Cards");
         showValueAllButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -450,19 +454,22 @@ public class GUI extends JFrame
 
         showValueAllLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         showValueAllLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        showValueAllLabel1.setText("Show Total Value for All Cards");
+        showValueAllLabel1.setText("See Total Value for All Cards");
 
         javax.swing.GroupLayout showValueAllLayout = new javax.swing.GroupLayout(showValueAll);
         showValueAll.setLayout(showValueAllLayout);
         showValueAllLayout.setHorizontalGroup(
             showValueAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, showValueAllLayout.createSequentialGroup()
-                .addGap(233, 233, 233)
+                .addContainerGap(233, Short.MAX_VALUE)
                 .addGroup(showValueAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(showValueAllLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
-                    .addComponent(showValueAllButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(showValueAllLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE))
-                .addGap(234, 234, 234))
+                    .addComponent(showValueAllLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(showValueAllButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(234, Short.MAX_VALUE))
+            .addGroup(showValueAllLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(showValueAllLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         showValueAllLayout.setVerticalGroup(
             showValueAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -478,15 +485,45 @@ public class GUI extends JFrame
 
         multiTabPane.addTab("Total Value", showValueAll);
 
+        totalByCurrencyAllLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        totalByCurrencyAllLabel.setText("See Total by Currency for all Cards");
+
+        totalByCurrencyAllButton.setText("Get Total by Currency for all Cards");
+        totalByCurrencyAllButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                totalByCurrencyAllButtonMouseClicked(evt);
+            }
+        });
+
+        totalByCurrencyAllTextArea.setColumns(20);
+        totalByCurrencyAllTextArea.setRows(5);
+        totalByCurrencyAllTextPane.setViewportView(totalByCurrencyAllTextArea);
+
         javax.swing.GroupLayout totalByCurrencyLayout = new javax.swing.GroupLayout(totalByCurrency);
         totalByCurrency.setLayout(totalByCurrencyLayout);
         totalByCurrencyLayout.setHorizontalGroup(
             totalByCurrencyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 725, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, totalByCurrencyLayout.createSequentialGroup()
+                .addGap(233, 233, 233)
+                .addGroup(totalByCurrencyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(totalByCurrencyAllTextPane)
+                    .addComponent(totalByCurrencyAllButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+                .addGap(234, 234, 234))
+            .addGroup(totalByCurrencyLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(totalByCurrencyAllLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         totalByCurrencyLayout.setVerticalGroup(
             totalByCurrencyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 533, Short.MAX_VALUE)
+            .addGroup(totalByCurrencyLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(totalByCurrencyAllLabel)
+                .addGap(73, 73, 73)
+                .addComponent(totalByCurrencyAllButton)
+                .addGap(18, 18, 18)
+                .addComponent(totalByCurrencyAllTextPane, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         multiTabPane.addTab("Total by Currency", totalByCurrency);
@@ -495,7 +532,7 @@ public class GUI extends JFrame
         totalByCountryAll.setLayout(totalByCountryAllLayout);
         totalByCountryAllLayout.setHorizontalGroup(
             totalByCountryAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 725, Short.MAX_VALUE)
+            .addGap(0, 726, Short.MAX_VALUE)
         );
         totalByCountryAllLayout.setVerticalGroup(
             totalByCountryAllLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -508,7 +545,7 @@ public class GUI extends JFrame
         listAllCards.setLayout(listAllCardsLayout);
         listAllCardsLayout.setHorizontalGroup(
             listAllCardsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 725, Short.MAX_VALUE)
+            .addGap(0, 726, Short.MAX_VALUE)
         );
         listAllCardsLayout.setVerticalGroup(
             listAllCardsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -523,7 +560,7 @@ public class GUI extends JFrame
             allCardsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(allCardsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(multiTabPane)
+                .addComponent(multiTabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
                 .addContainerGap())
         );
         allCardsPanelLayout.setVerticalGroup(
@@ -539,7 +576,7 @@ public class GUI extends JFrame
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mainTabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 755, Short.MAX_VALUE)
+                .addComponent(mainTabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -871,6 +908,14 @@ public class GUI extends JFrame
 
     // Get the total value for all cards
     private void showValueAllButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showValueAllButtonMouseClicked
+        // Check if there are cards
+        if(cards.size() < 1)
+        {
+            showValueAllLabel1.setText("No cards found!");
+            return;
+        }
+        
+        // Get the value of all cards
         double total = 0;
         
         // Loop through each card and get its balance
@@ -879,8 +924,52 @@ public class GUI extends JFrame
             total += card.getBalance();
         }
         
-        showValueAllLabel2.setText(String.format("Total Value of Cards: $%.2f", total));
+        showValueAllLabel1.setText("Total value of all cards found!");
+        showValueAllLabel2.setText(String.format("Total Value of Cards: $%.2f AUD", total));
     }//GEN-LAST:event_showValueAllButtonMouseClicked
+
+    // Get tht total values of each currency in all cards
+    private void totalByCurrencyAllButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_totalByCurrencyAllButtonMouseClicked
+        // Check if there are cards added to the program
+        if(cards.size() < 1)
+        {
+            totalByCurrencyAllLabel.setText("No cards found!");
+            return;
+        }
+        
+        // Clear text area
+        totalByCurrencyAllTextArea.setText("");
+        
+        // Loop through each card
+        HashMap<String,Double> currencies = new HashMap<>();
+        for(Card card : cards)
+        {
+            // Loop through each item in the card's balances
+            HashMap<String, Double> temp = card.getTotalOfEachCurrency();
+            for(HashMap.Entry<String, Double> item : temp.entrySet())
+            {
+                if(currencies.containsKey(item.getKey()))
+                {
+                    currencies.put(item.getKey(), currencies.get(item.getKey()) + item.getValue());
+                }
+                else
+                {
+                    currencies.put(item.getKey(), item.getValue());
+                }
+            }
+        }
+        
+        // Set text area to total of each currency for all cards
+        String totalOfEach = "--Total Balance Per Currency--\n";
+        
+        for(HashMap.Entry<String,Double> item : currencies.entrySet())
+        {
+            totalOfEach += String.format("%s: %.2f\n", item.getKey(), item.getValue());
+        }
+        
+        totalByCurrencyAllLabel.setText("Total by currency for all cards found!");
+        totalByCurrencyAllTextArea.setText(totalOfEach);
+    }//GEN-LAST:event_totalByCurrencyAllButtonMouseClicked
 
     // Method to populate card lists
     private ComboBoxModel getCardList()
@@ -1000,5 +1089,9 @@ public class GUI extends JFrame
     private javax.swing.JTextArea totalByCountryTextArea;
     private javax.swing.JScrollPane totalByCountryTextPane;
     private javax.swing.JPanel totalByCurrency;
+    private javax.swing.JButton totalByCurrencyAllButton;
+    private javax.swing.JLabel totalByCurrencyAllLabel;
+    private javax.swing.JTextArea totalByCurrencyAllTextArea;
+    private javax.swing.JScrollPane totalByCurrencyAllTextPane;
     // End of variables declaration//GEN-END:variables
 }
