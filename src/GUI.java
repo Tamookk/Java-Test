@@ -1,5 +1,6 @@
 package assignment;
 
+import java.awt.event.*;
 import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -94,7 +95,6 @@ public class GUI extends JFrame
         listCardsTextPane = new javax.swing.JScrollPane();
         listCardsTextArea = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Card Program");
         setBackground(new java.awt.Color(255, 255, 255));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -1224,32 +1224,17 @@ public class GUI extends JFrame
         {
             System.out.println("Failed to open file");
         }
-            
-        // -- Testing for file IO - reading from saved file
-        // Print out each card and its purchases
-        for(Card card : cards)
-        {
-            System.out.println(card);
-            for(Purchase p : card.getPurchases())
-            {
-                System.out.println(p.getPurchaseInfo());
-            }
-        }
-        // Print out each multicard balance
-        for(MultiCard card : multicards)
-        {
-            System.out.println(card.getTotalOfEachCurrency().toString());
-        }
         
-        /* Create and display the form
+        /* Create and display the form */
+        GUI gui = new GUI();
         java.awt.EventQueue.invokeLater(new Runnable()
         {
             public void run() {
-                new GUI().setVisible(true);
+                gui.setVisible(true);
             }
         });
-*/
-        // Code to test the saving of data
+        
+        // Save the program data on close
         try
         {
             saveData();
@@ -1258,6 +1243,15 @@ public class GUI extends JFrame
         {
             System.out.println(e.getMessage());
         }
+        
+        // Close the GUI after the user exits the program
+        gui.addComponentListener(new ComponentAdapter() {
+            public void componentHidden(ComponentEvent e)
+            {
+                ((JFrame)(e.getComponent())).dispose();
+            }
+        });
+        
     }
     
     // Read the save file, or create it if it does not exist
@@ -1266,7 +1260,6 @@ public class GUI extends JFrame
         // Create an absolute file path for the save file
         Path path = FileSystems.getDefault().getPath("cards.txt");
         path = path.toAbsolutePath();
-        System.out.println(path.toString()); // Test that getting the path worked
         // Create a new file object based on the path
         File file = new File(path.toString(), "");
         // If the file doesn't exist, make it
@@ -1306,7 +1299,6 @@ public class GUI extends JFrame
             {
                 // Clean up the line and split it into a String array
                 card = card.trim();
-                System.out.println(card);
                 String[] cardInfo = card.split(",");
                 // Check if the card is a BC or MC
                 if(cardInfo[0].equals("BC"))
@@ -1318,7 +1310,6 @@ public class GUI extends JFrame
                     
                     // Check the amount of purchases made
                     int purchasesMade = Integer.parseInt(cardInfo[4]);
-                    System.out.println("purchases made: " + purchasesMade);
                     // Go to the next line/card if there are no purchases in it
                     if(purchasesMade <= 0)
                     {
@@ -1360,7 +1351,6 @@ public class GUI extends JFrame
                     // Add purchases to the card
                     // Check the amount of purchases made
                     int purchasesMade = Integer.parseInt(cardInfo[cardInfoIndex]);
-                    System.out.println("purchases made: " + purchasesMade);
                     // Go to the next line/card if there are no purchases in it
                     if(purchasesMade <= 0)
                     {
@@ -1389,9 +1379,8 @@ public class GUI extends JFrame
     public static void saveData() throws IOException
     {
         // Create an absolute file path for the save file
-        Path path = FileSystems.getDefault().getPath("copy.txt");
+        Path path = FileSystems.getDefault().getPath("cards.txt");
         path = path.toAbsolutePath();
-        System.out.println(path.toString()); // Test that getting the path worked
         // Create a new file object based on the path
         File file = new File(path.toString(), "");
         // If the file doesn't exist, make it
@@ -1448,8 +1437,6 @@ public class GUI extends JFrame
             out.append(record);
             out.newLine();
         }
-        
-        // Write to the file
         
         // Close the file
         out.close();
