@@ -6,6 +6,7 @@ import java.util.*;
 import java.io.*;
 import java.nio.*;
 import java.nio.file.*;
+import java.security.KeyStore;
 
 
 public class GUI extends JFrame
@@ -94,7 +95,13 @@ public class GUI extends JFrame
         listCardsTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Card Program");
         setBackground(new java.awt.Color(255, 255, 255));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         mainTabPane.setPreferredSize(new java.awt.Dimension(775, 600));
 
@@ -403,7 +410,7 @@ public class GUI extends JFrame
                 .addGap(233, 233, 233)
                 .addGroup(showValueSingleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(showValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(showValueTextPane, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                    .addComponent(showValueTextPane)
                     .addComponent(showValueList, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(showValueButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(234, 234, 234))
@@ -1137,6 +1144,18 @@ public class GUI extends JFrame
         listCardsLabel.setText("Results found.");
     }//GEN-LAST:event_listCardsButtonMouseClicked
 
+    // Save all data into a text file when the application is closed
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        try
+        {
+            saveData();
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_formWindowClosed
+
     // Method to populate card lists
     private ComboBoxModel getCardList()
     {
@@ -1230,6 +1249,15 @@ public class GUI extends JFrame
             }
         });
 */
+        // Code to test the saving of data
+        try
+        {
+            saveData();
+        }
+        catch(IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
     
     // Read the save file, or create it if it does not exist
@@ -1248,22 +1276,22 @@ public class GUI extends JFrame
         }
         
         // Try every line from the file, then close it
-        BufferedReader r = new BufferedReader(new FileReader(file));
+        BufferedReader in = new BufferedReader(new FileReader(file));
         
         try
         {
             List<String> fileCards = new ArrayList<>();
-            String line = r.readLine();
+            String line = in.readLine();
             while(line != null)
             {
                 fileCards.add(line);
-                line = r.readLine();
+                line = in.readLine();
             }
             return fileCards;
         }
         finally
         {
-            r.close();
+            in.close();
         }
     }
     
@@ -1355,6 +1383,76 @@ public class GUI extends JFrame
                 }
             } 
         }
+    }
+    
+    // Write all info to the save file
+    public static void saveData() throws IOException
+    {
+        // Create an absolute file path for the save file
+        Path path = FileSystems.getDefault().getPath("copy.txt");
+        path = path.toAbsolutePath();
+        System.out.println(path.toString()); // Test that getting the path worked
+        // Create a new file object based on the path
+        File file = new File(path.toString(), "");
+        // If the file doesn't exist, make it
+        if(!file.exists())
+        {
+            file.createNewFile();
+        }
+        
+        // Create the BufferedWriter to save the program data
+        BufferedWriter out = new BufferedWriter(new FileWriter(file));
+        
+        // Clear the file
+        out.write("");
+        
+        // Write each card and its purchases to the save file
+        for(Card card : cards)
+        {
+            // Add info relevant to whether the card is basic or multi to the record
+            String record = "";
+            if(card.isMulticard())
+            {
+                record += "MC";
+                record += String.format(",%s,%s", card.getID(), card.getName());
+                
+                // Get the currencies in the multicard and add them to the record
+                HashMap<String,Double> tmp = card.getTotalOfEachCurrency();
+                record += String.format(",%d", tmp.size());
+                for(HashMap.Entry<String,Double> item : tmp.entrySet())
+                {
+                    record += String.format(",%s,%.2f", item.getKey(), item.getValue());
+                }
+            }
+            else
+            {
+                record += "BC";
+                record += String.format(",%s,%s,%.2f", card.getID(), card.getName(), card.getBalance());
+                
+            }
+            
+            // Add the card's purchases to the record
+            record += String.format(",%d", card.getPurchases().size());
+            if(!card.getPurchases().isEmpty())
+            {
+                for(Purchase p : card.getPurchases())
+                {
+                    String purchase = String.format(",%s,%s,%s,%.2f,%s",
+                            p.getDate(), p.getCountry(), p.getCurrency(), 
+                            p.getAmount(), p.getDescription());
+                    record += purchase;
+                }
+            }
+            
+            // Write the record to the file
+            out.append(record);
+            out.newLine();
+        }
+        
+        // Write to the file
+        
+        // Close the file
+        out.close();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

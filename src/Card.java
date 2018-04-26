@@ -36,6 +36,9 @@ public abstract class Card implements Comparable<Card>
     // Get number of active currencies in the card
     public abstract int numOfActiveCurrencies();
     
+    // To tell whether the card is a multicard or not
+    public abstract boolean isMulticard();
+    
     // Return the card's ID and name
     public String toString(){ return id + " | " + name; }
     

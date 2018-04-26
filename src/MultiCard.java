@@ -166,4 +166,7 @@ public class MultiCard extends Card
     {
         this.balances = cur;
     }
+    
+    // Return that the card is a multicard
+    public boolean isMulticard(){ return true; }
 }

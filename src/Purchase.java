@@ -18,18 +18,21 @@ public class Purchase
         this.amount = amount;
         this.description = description;
     }
-
-    // Get amount spent on the purchase
-    public double getAmount()
-    {
-        return amount;
-    }
+    
+    // Get the date the purchase was made
+    public String getDate(){ return date; }
 
     // Get the country the purchase was made in
-    public String getCountry()
-    {
-        return location;
-    }
+    public String getCountry(){ return location; }
+    
+    // Get the currency the purchase was made in
+    public String getCurrency(){ return currency; }
+    
+    // Get amount spent on the purchase
+    public double getAmount(){ return amount; }
+
+    // Get the description of the purchase
+    public String getDescription(){ return description; }
 
     // Get info on the purchase
     public String getPurchaseInfo()
