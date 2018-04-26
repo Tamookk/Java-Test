@@ -854,21 +854,25 @@ public class GUI extends JFrame
             return;
         }
         
-        // Check if the selected currency is in the card
-        if(!cards.get(makePurchaseCardList.getSelectedIndex() - 1).getTotalOfEachCurrency().containsKey(
-           makePurchaseCurrencyList.getItemAt(makePurchaseCurrencyList.getSelectedIndex())))
+        // Check if card is multi
+        if(cards.get(makePurchaseCardList.getSelectedIndex() - 1).isMulticard())
+        {
+            // Check if the selected currency is in the card
+            if(!cards.get(makePurchaseCardList.getSelectedIndex() - 1).getTotalOfEachCurrency().containsKey(
+            makePurchaseCurrencyList.getItemAt(makePurchaseCurrencyList.getSelectedIndex())))
             {
                 makePurchaseLabel.setText("Currency not in card!");
                 return;
             }
-            
+        }
+        
         // Get the current date
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
         Date date = new Date();
         
         // Make a purchase
         if(cards.get(makePurchaseCardList.getSelectedIndex() - 1).makePurchase(
-                  date.toString(), makePurchaseCountryTF.getText(), 
+                  formatter.format(date), makePurchaseCountryTF.getText(), 
                   makePurchaseCurrencyList.getItemAt(makePurchaseCurrencyList.getSelectedIndex()),
                   amount, makePurchaseDescriptionTF.getText()))
         {   

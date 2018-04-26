@@ -22,17 +22,19 @@ Honestly the thing isn't done and doesn't work properly, and I assume that if yo
 
 ## Todo
 
-### Single Card:
-
-* Make Purchase
-  	* Say currency not in card only if card is a multicard and currency isn't in card (requires SQL/filesaving code)
-  	* Make purchase even if currency not in card if basic card (requires SQL/filesaving code)
-
 ### Overall Program:
 
  * Split main GUI components into separate classes/files to clean up the program.
 
  * All callbacks so card selection lists are repopulated when the program is opened and when a new card is created (requires splitting GUI components into separate classes).
+
+ * Improve how card combo box models are created.
+
+ * Implement file saving with SQL (very important)
+
+ * Fun stuff not really needed but anyway:
+ 	* Toolbar
+ 	* File choosing box, so user can choose which save file to load into the program.
 
 ## Acknowledgments
 
@@ -48,6 +50,12 @@ Honestly the thing isn't done and doesn't work properly, and I assume that if yo
 * Added ability to convert currency:
 	* Convert AUD on card to any of the 7 available currencies.
 	* Will not work if more than 5 currencies already on card, or there are insufficient funds to do the conversion.
+
+* Changed how making a purchase works:
+  	* Warn user that the selected currency is not in the selected card only if the card is a multicard, and the currency isn't in card.
+  	* Make a purchase even if the selected currency is not in the card if the card is a basic card.
+
+* Added a title to the window!
 
 * General code cleanup.
 
