@@ -24,24 +24,32 @@ Honestly the thing isn't done and doesn't work properly, and I assume that if yo
 
 ### Single Card:
 
-* Convert Currency
-	* Everything (requires SQL/filesaving code)
-
 * Make Purchase
   	* Say currency not in card only if card is a multicard and currency isn't in card (requires SQL/filesaving code)
   	* Make purchase even if currency not in card if basic card (requires SQL/filesaving code)
 
 ### Overall Program:
 
- * Ability to store card data into and out of a text file
-
  * Split main GUI components into separate classes/files to clean up the program.
+
+ * All callbacks so card selection lists are repopulated when the program is opened and when a new card is created (requires splitting GUI components into separate classes).
 
 ## Acknowledgments
 
 * My compsci professor for teaching me Java and thus making me fiddle around with it here.
 
 ## Changelog
+
+### 26-04-2018
+* Added file IO:
+	* Program loads saved card and purchase data on open.
+	* Program saves card and purchase data on close.
+
+* Added ability to convert currency:
+	* Convert AUD on card to any of the 7 available currencies.
+	* Will not work if more than 5 currencies already on card, or there are insufficient funds to do the conversion.
+
+* General code cleanup.
 
 ### 23-04-2018
 * Added basic functionality for all things that can be done to all cards:

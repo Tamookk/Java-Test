@@ -45,6 +45,11 @@ public class GUI extends JFrame
         loadCardTextField = new javax.swing.JTextField();
         loadCardButton = new javax.swing.JButton();
         convertCurrency = new javax.swing.JPanel();
+        convertCurrencyCardList = new javax.swing.JComboBox<>();
+        convertCurrencyTextField = new javax.swing.JTextField();
+        convertCurrencyCurList = new javax.swing.JComboBox<>();
+        convertCurrencyButton = new javax.swing.JButton();
+        convertCurrencyLabel = new javax.swing.JLabel();
         makePurchase = new javax.swing.JPanel();
         makePurchaseLabel = new javax.swing.JLabel();
         makePurchaseCardList = new javax.swing.JComboBox<>();
@@ -198,15 +203,59 @@ public class GUI extends JFrame
 
         singleTabPane.addTab("Load Card", loadCard);
 
+        convertCurrencyCardList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Card...", " " }));
+        convertCurrencyCardList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                convertCurrencyCardListMouseEntered(evt);
+            }
+        });
+
+        convertCurrencyTextField.setText("Amount");
+
+        convertCurrencyCurList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Currency...", "AUD", "NZD", "USD", "CAD", "GBP", "JPY", "EUR" }));
+
+        convertCurrencyButton.setText("Convert Currency");
+        convertCurrencyButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                convertCurrencyButtonMouseClicked(evt);
+            }
+        });
+
+        convertCurrencyLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        convertCurrencyLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        convertCurrencyLabel.setText("Convert Currency");
+
         javax.swing.GroupLayout convertCurrencyLayout = new javax.swing.GroupLayout(convertCurrency);
         convertCurrency.setLayout(convertCurrencyLayout);
         convertCurrencyLayout.setHorizontalGroup(
             convertCurrencyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(convertCurrencyLayout.createSequentialGroup()
+                .addContainerGap(234, Short.MAX_VALUE)
+                .addGroup(convertCurrencyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(convertCurrencyCardList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(convertCurrencyTextField)
+                    .addComponent(convertCurrencyButton, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                    .addComponent(convertCurrencyCurList, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(234, Short.MAX_VALUE))
+            .addGroup(convertCurrencyLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(convertCurrencyLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         convertCurrencyLayout.setVerticalGroup(
             convertCurrencyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(convertCurrencyLayout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(convertCurrencyLabel)
+                .addGap(18, 18, 18)
+                .addComponent(convertCurrencyCardList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(convertCurrencyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(convertCurrencyCurList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(convertCurrencyButton)
+                .addContainerGap(255, Short.MAX_VALUE))
         );
 
         singleTabPane.addTab("Convert Currency", convertCurrency);
@@ -1156,6 +1205,71 @@ public class GUI extends JFrame
         }
     }//GEN-LAST:event_formWindowClosed
 
+    // Populate the card list for the convert currency tab
+    private void convertCurrencyCardListMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_convertCurrencyCardListMouseEntered
+        convertCurrencyCardList.setModel(getMultiCardList());
+    }//GEN-LAST:event_convertCurrencyCardListMouseEntered
+
+    // Convert currency
+    private void convertCurrencyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_convertCurrencyButtonMouseClicked
+        // Check if the fields are filled in correctly
+        if(convertCurrencyCardList.getSelectedIndex() == 0)
+        {
+            convertCurrencyLabel.setText("Please select a card.");
+            return;
+        }
+        
+        if(convertCurrencyTextField.getText().equals("Amount") || 
+           convertCurrencyTextField.getText().equals(""))
+        {
+            convertCurrencyLabel.setText("Please enter an amount.");
+            return;
+        }
+        
+        if(convertCurrencyCurList.getSelectedIndex() == 0)
+        {
+            makePurchaseLabel.setText("Please select a currency.");
+            return;
+        }
+        
+        // Try to convert the entered amount to a double
+        double amount = 0;
+        try
+        {
+            amount = Double.parseDouble(convertCurrencyTextField.getText());
+        }
+        catch(Exception e)
+        {
+            makePurchaseLabel.setText("Amount entered not valid!");
+            return;
+        }
+        
+        // Check if the card already has 5 currencies in it
+        if(multicards.get(convertCurrencyCardList.getSelectedIndex() - 1).getTotalOfEachCurrency().size() >= 5)
+        {
+            convertCurrencyLabel.setText("Already 5 currencies in card!");
+            return;
+        }
+        
+        // Attempt to convert currencies
+        boolean convert = multicards.get(convertCurrencyCardList.getSelectedIndex() - 1).convertCurrency
+        (convertCurrencyCurList.getItemAt(convertCurrencyCurList.getSelectedIndex()), amount);
+        
+        
+        if(!convert)
+        {
+            convertCurrencyLabel.setText("Conversion failed. Insufficient funds.");
+            return;
+        }
+        
+        convertCurrencyLabel.setText("Conversion successful!");
+        
+        // Reset the input fields back to their original values
+        convertCurrencyCardList.setSelectedIndex(0);
+        convertCurrencyCurList.setSelectedIndex(0);
+        convertCurrencyTextField.setText("Amount");
+    }//GEN-LAST:event_convertCurrencyButtonMouseClicked
+
     // Method to populate card lists
     private ComboBoxModel getCardList()
     {
@@ -1445,6 +1559,11 @@ public class GUI extends JFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel allCardsPanel;
     private javax.swing.JPanel convertCurrency;
+    private javax.swing.JButton convertCurrencyButton;
+    private javax.swing.JComboBox<String> convertCurrencyCardList;
+    private javax.swing.JComboBox<String> convertCurrencyCurList;
+    private javax.swing.JLabel convertCurrencyLabel;
+    private javax.swing.JTextField convertCurrencyTextField;
     private javax.swing.JPanel createCard;
     private javax.swing.JButton createCardButton;
     private javax.swing.JLabel createCardLabel;

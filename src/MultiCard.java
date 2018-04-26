@@ -61,21 +61,10 @@ public class MultiCard extends Card
     }
 
     // Convert currency from AUD to given currency
-    public void convertCurrency(String to, double amount)
+    public boolean convertCurrency(String to, double amount)
     {
         // Check there are sufficient funds
-        if(balances.get("AUD") < amount)
-        {
-            System.out.println("Insufficient funds.");
-            return;
-        }
-
-        // Do not let user add another currency to a card if there are 5 already
-        if(balances.size() >= 5 && !balances.containsKey(to))
-        {
-            System.out.println("5 currencies already in card. Cannot add more.");
-            return;
-        }
+        if(balances.get("AUD") < amount){ return false; }
 
         // Subtract amount from AUD funds
         balances.put("AUD", balances.get("AUD") - amount);
@@ -89,8 +78,8 @@ public class MultiCard extends Card
         {
             balances.put(to, amount * CURRENCIES.get(to));
         }
-
-        System.out.println("Conversion successful.");
+        
+        return true;
     }
 
     // Make a purchase
