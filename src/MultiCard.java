@@ -160,4 +160,10 @@ public class MultiCard extends Card
         // Return the number of active currencies
         return balances.size();
     }
+    
+    // Set the currencies HashMap for the card (when reading from save file)
+    public void setBalancesMap(HashMap<String, Double> cur)
+    {
+        this.balances = cur;
+    }
 }

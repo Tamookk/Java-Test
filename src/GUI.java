@@ -1,9 +1,11 @@
 package assignment;
 
-import java.awt.*;
 import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.io.*;
+import java.nio.*;
+import java.nio.file.*;
 
 
 public class GUI extends JFrame
@@ -1193,13 +1195,166 @@ public class GUI extends JFrame
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        // Try open and read the text file
+        try
+        {
+            List<String> fileCards = readSaveFile();
+            parseFileInfo(fileCards);
+        }
+        catch(IOException e)
+        {
+            System.out.println("Failed to open file");
+        }
+            
+        // -- Testing for file IO - reading from saved file
+        // Print out each card and its purchases
+        for(Card card : cards)
+        {
+            System.out.println(card);
+            for(Purchase p : card.getPurchases())
+            {
+                System.out.println(p.getPurchaseInfo());
+            }
+        }
+        // Print out each multicard balance
+        for(MultiCard card : multicards)
+        {
+            System.out.println(card.getTotalOfEachCurrency().toString());
+        }
+        
+        /* Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable()
         {
             public void run() {
                 new GUI().setVisible(true);
             }
         });
+*/
+    }
+    
+    // Read the save file, or create it if it does not exist
+    public static List<String> readSaveFile() throws IOException
+    {
+        // Create an absolute file path for the save file
+        Path path = FileSystems.getDefault().getPath("cards.txt");
+        path = path.toAbsolutePath();
+        System.out.println(path.toString()); // Test that getting the path worked
+        // Create a new file object based on the path
+        File file = new File(path.toString(), "");
+        // If the file doesn't exist, make it
+        if(!file.exists())
+        {
+            file.createNewFile();
+        }
+        
+        // Try every line from the file, then close it
+        BufferedReader r = new BufferedReader(new FileReader(file));
+        
+        try
+        {
+            List<String> fileCards = new ArrayList<>();
+            String line = r.readLine();
+            while(line != null)
+            {
+                fileCards.add(line);
+                line = r.readLine();
+            }
+            return fileCards;
+        }
+        finally
+        {
+            r.close();
+        }
+    }
+    
+    // Parse the info from the save file
+    public static void parseFileInfo(List<String> fileCards)
+    {
+        // If the save file is not empty
+        if(!fileCards.isEmpty())
+        {
+           // Iterate over each line in the file if it has cards in it
+            for(String card : fileCards)
+            {
+                // Clean up the line and split it into a String array
+                card = card.trim();
+                System.out.println(card);
+                String[] cardInfo = card.split(",");
+                // Check if the card is a BC or MC
+                if(cardInfo[0].equals("BC"))
+                {
+                    // Create new BasicCard object based on saved card info
+                    BasicCard tmp = new BasicCard(cardInfo[1], cardInfo[2]);
+                    tmp.addFunds(Double.parseDouble(cardInfo[3]));
+                    cards.add(tmp);
+                    
+                    // Check the amount of purchases made
+                    int purchasesMade = Integer.parseInt(cardInfo[4]);
+                    System.out.println("purchases made: " + purchasesMade);
+                    // Go to the next line/card if there are no purchases in it
+                    if(purchasesMade <= 0)
+                    {
+                        continue;
+                    }
+                    // Go through each purchase and add it to the card's purchases arraylist
+                    for(int i = 5; i <= purchasesMade*5; i+=5)
+                    {
+                        Purchase p = new Purchase(cardInfo[i], cardInfo[i+1], 
+                                cardInfo[i+2], Double.parseDouble(cardInfo[i+3]),
+                                cardInfo[i+4]);
+                        tmp.addPurchase(p);
+                    }
+                }
+                else if(cardInfo[0].equals("MC"))
+                {
+                    // Create new MultiCard object based on save card info
+                    MultiCard mc = new MultiCard(cardInfo[1], cardInfo[2]);
+                    
+                    // Check what currencies are in the card and add them to the card's currencies HashMap
+                    String[] currencies = {"AUD", "NZD", "USD", "CAD", "GBP", "EUR", "JPY"};
+                    int amountOfCurrencies = Integer.parseInt(cardInfo[3]);
+                    HashMap<String, Double> tmp = new HashMap<>();
+                    
+                    // Iterate over each currency stored in the saved record
+                    for(int i=4;i<4+(amountOfCurrencies*2); i+=2)
+                    {
+                        tmp.put(cardInfo[i], Double.parseDouble(cardInfo[i+1]));
+                    }
+                    
+                    // Set the current index for the card record
+                    int cardInfoIndex = 4+(amountOfCurrencies*2);
+                    
+                    // Set the multicard's balances and add it to the program lists
+                    mc.setBalancesMap(tmp);
+                    cards.add(mc);
+                    multicards.add(mc);
+                    
+                    // Add purchases to the card
+                    // Check the amount of purchases made
+                    int purchasesMade = Integer.parseInt(cardInfo[cardInfoIndex]);
+                    System.out.println("purchases made: " + purchasesMade);
+                    // Go to the next line/card if there are no purchases in it
+                    if(purchasesMade <= 0)
+                    {
+                        continue;
+                    }
+                    // Go through each purchase and add it to the card's purchases arraylist
+                    cardInfoIndex++;
+                    for(int i = 0; i < purchasesMade; i++)
+                    {
+                        Purchase p = new Purchase(cardInfo[cardInfoIndex], cardInfo[cardInfoIndex+1], 
+                                cardInfo[cardInfoIndex+2], Double.parseDouble(cardInfo[cardInfoIndex+3]),
+                                cardInfo[cardInfoIndex+4]);
+                        cardInfoIndex += 5;
+                        mc.addPurchase(p);
+                    }
+                }
+                else
+                {
+                    System.out.println("Error with card record. Skipping...");
+                }
+            } 
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

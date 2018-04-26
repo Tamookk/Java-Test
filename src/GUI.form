@@ -592,7 +592,7 @@
                               <EmptySpace min="-2" pref="233" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="showValueLabel" max="32767" attributes="0"/>
-                                  <Component id="showValueTextPane" alignment="1" pref="259" max="32767" attributes="0"/>
+                                  <Component id="showValueTextPane" alignment="1" max="32767" attributes="0"/>
                                   <Component id="showValueList" alignment="0" max="32767" attributes="0"/>
                                   <Component id="showValueButton" alignment="0" max="32767" attributes="0"/>
                               </Group>

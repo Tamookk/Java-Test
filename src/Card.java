@@ -54,4 +54,10 @@ public abstract class Card implements Comparable<Card>
         }
         return this.getBalance() > other.getBalance() ? 1 : -1;
     }
+    
+    // Add a purchase to the card (for when reading from a saved file)
+    public void addPurchase(Purchase p)
+    {
+        this.purchases.add(p);
+    }
 }
