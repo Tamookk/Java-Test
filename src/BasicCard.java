@@ -200,4 +200,7 @@ public class BasicCard extends Card
     {
         return balance != 0 ? 1 : 0;
     }
+    
+    // Return that the card is not a multicard
+    public boolean isMulticard(){ return false; }
 }

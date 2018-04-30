@@ -2,7 +2,7 @@ package assignment;
 
 import java.util.*;
 
-public abstract class Card
+public abstract class Card implements Comparable<Card>
 {
     // Create class variables
     protected String id;
@@ -36,6 +36,31 @@ public abstract class Card
     // Get number of active currencies in the card
     public abstract int numOfActiveCurrencies();
     
+    // To tell whether the card is a multicard or not
+    public abstract boolean isMulticard();
+    
     // Return the card's ID and name
     public String toString(){ return id + " | " + name; }
+    
+    // Return the card's ID
+    public String getID() { return id; }
+    
+    // Return the card's name
+    public String getName() { return name; }
+    
+    // Method needed to implement comparable in parent class
+    public int compareTo(Card other)
+    {
+        if(other.getBalance() == this.getBalance())
+        {
+            return 0;
+        }
+        return this.getBalance() > other.getBalance() ? 1 : -1;
+    }
+    
+    // Add a purchase to the card (for when reading from a saved file)
+    public void addPurchase(Purchase p)
+    {
+        this.purchases.add(p);
+    }
 }
