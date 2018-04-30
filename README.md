@@ -24,15 +24,7 @@ Honestly the thing isn't done and doesn't work properly, and I assume that if yo
 
 ### Overall Program:
 
- * Split main GUI components into separate classes/files to clean up the program.
-
- * All callbacks so card selection lists are repopulated when the program is opened and when a new card is created (requires splitting GUI components into separate classes).
-
- * Improve how card combo box models are created.
-
- * Implement file saving with SQL (very important)
-
- * Fun stuff not really needed but anyway:
+* Fun stuff not really needed but anyway:
  	* Toolbar
  	* File choosing box, so user can choose which save file to load into the program.
 
@@ -41,6 +33,22 @@ Honestly the thing isn't done and doesn't work properly, and I assume that if yo
 * My compsci professor for teaching me Java and thus making me fiddle around with it here.
 
 ## Changelog
+
+### 30-04-2018
+* Whew, this is a big one.
+
+* Removed text file IO, replaced it with database IO:
+	* Uses SQLite (specifically the library [here](https://bitbucket.org/xerial/sqlite-jdbc) (which is needed to compile and run the program))
+	* The program reads the database on open and saves to the database on close.
+
+* Separated GUI components into their own classes and files:
+	* Put each instance of a JPanel into its own class.
+	* Put each ActionListener for each JPanel into its own class.
+	* This took most of the time working on this today, I'm so tired, but feel so accomplished.
+
+* Changed how card lists are populated for all tabs that use them. Moved from using a MouseEntered listener (which was yucky) to an interface implementation and callbacks (not yucky). Fixes an issue that the card lists had before, where if your mouse pointer entered the JComboBox, the selected item index would reset.
+
+* And probably other smaller things that I can't think of because I'm tired. Sorry changelog purists.
 
 ### 26-04-2018
 * Added file IO:
