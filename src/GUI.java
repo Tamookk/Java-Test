@@ -16,6 +16,10 @@ public class GUI extends JFrame
     static ArrayList<Card> cards = new ArrayList<>();
     static ArrayList<MultiCard> multicards = new ArrayList<>();
     
+    static Database db;
+    
+    static int numOfCards = 0;
+    
     // Creates new form GUI
     public GUI()
     {
@@ -225,30 +229,32 @@ public class GUI extends JFrame
         convertCurrencyLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         convertCurrencyLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         convertCurrencyLabel.setText("Convert Currency");
+        convertCurrencyLabel.setMaximumSize(new java.awt.Dimension(726, 22));
+        convertCurrencyLabel.setMinimumSize(new java.awt.Dimension(726, 22));
 
         javax.swing.GroupLayout convertCurrencyLayout = new javax.swing.GroupLayout(convertCurrency);
         convertCurrency.setLayout(convertCurrencyLayout);
         convertCurrencyLayout.setHorizontalGroup(
             convertCurrencyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(convertCurrencyLayout.createSequentialGroup()
-                .addContainerGap(234, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(convertCurrencyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(convertCurrencyCardList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(convertCurrencyTextField)
                     .addComponent(convertCurrencyButton, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
                     .addComponent(convertCurrencyCurList, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(234, Short.MAX_VALUE))
-            .addGroup(convertCurrencyLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(convertCurrencyLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(convertCurrencyLayout.createSequentialGroup()
+                .addContainerGap(112, Short.MAX_VALUE)
+                .addComponent(convertCurrencyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(114, Short.MAX_VALUE))
         );
         convertCurrencyLayout.setVerticalGroup(
             convertCurrencyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(convertCurrencyLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(convertCurrencyLabel)
-                .addGap(18, 18, 18)
+                .addGap(35, 35, 35)
+                .addComponent(convertCurrencyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(73, 73, 73)
                 .addComponent(convertCurrencyCardList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(convertCurrencyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -741,16 +747,20 @@ public class GUI extends JFrame
         // Create a card based upon the selected card type in the combo box
         if(createCardList.getSelectedIndex() == 1)
         {
-            BasicCard bc = new BasicCard("C001", createCardTextField.getText());
+            String cardID = String.format("C%03d", numOfCards);
+            BasicCard bc = new BasicCard(cardID, createCardTextField.getText());
             createCardLabel.setText("Card successfully created!");
             cards.add(bc);
+            numOfCards++;
         }
         else
         {
-            MultiCard mc = new MultiCard("C001", createCardTextField.getText());
+            String cardID = String.format("C%03d", numOfCards);
+            MultiCard mc = new MultiCard(cardID, createCardTextField.getText());
             createCardLabel.setText("Card successfully created!");
             cards.add(mc);
             multicards.add(mc);
+            numOfCards++;
         }
         
         // Set the text field and combo box back to their original values
@@ -1198,18 +1208,6 @@ public class GUI extends JFrame
         listCardsLabel.setText("Results found.");
     }//GEN-LAST:event_listCardsButtonMouseClicked
 
-    // Save all data into a text file when the application is closed
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        try
-        {
-            saveData();
-        }
-        catch(IOException e)
-        {
-            System.out.println(e.getMessage());
-        }
-    }//GEN-LAST:event_formWindowClosed
-
     // Populate the card list for the convert currency tab
     private void convertCurrencyCardListMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_convertCurrencyCardListMouseEntered
         convertCurrencyCardList.setModel(getMultiCardList());
@@ -1233,7 +1231,7 @@ public class GUI extends JFrame
         
         if(convertCurrencyCurList.getSelectedIndex() == 0)
         {
-            makePurchaseLabel.setText("Please select a currency.");
+            convertCurrencyLabel.setText("Please select a currency.");
             return;
         }
         
@@ -1274,6 +1272,12 @@ public class GUI extends JFrame
         convertCurrencyCurList.setSelectedIndex(0);
         convertCurrencyTextField.setText("Amount");
     }//GEN-LAST:event_convertCurrencyButtonMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // Save data
+        db.saveData(cards);
+        db.closeDatabase();
+    }//GEN-LAST:event_formWindowClosed
 
     // Method to populate card lists
     private ComboBoxModel getCardList()
@@ -1332,19 +1336,16 @@ public class GUI extends JFrame
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-/*
-        // Try open and read the text file
-        try
-        {
-            List<String> fileCards = readSaveFile();
-            parseFileInfo(fileCards);
-        }
-        catch(IOException e)
-        {
-            System.out.println("Failed to open file");
-        }
         
-        /* Create and display the form 
+        // Open and read the database
+        db = new Database("cards.db");
+        ArrayList<ArrayList> cardLists = db.readCards();
+        cards = cardLists.get(0);
+        multicards = cardLists.get(1);
+        
+        numOfCards = cards.size() + 1;
+        
+        /* Create and display the form */
         GUI gui = new GUI();
         java.awt.EventQueue.invokeLater(new Runnable()
         {
@@ -1353,244 +1354,13 @@ public class GUI extends JFrame
             }
         });
         
-        // Save the program data on close
-        try
-        {
-            saveData();
-        }
-        catch(IOException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
         // Close the GUI after the user exits the program
         gui.addComponentListener(new ComponentAdapter() {
             public void componentHidden(ComponentEvent e)
             {
                 ((JFrame)(e.getComponent())).dispose();
             }
-        });*/
-        
-        // Test code for reading and writing to a database
-        Database db = new Database("cards.db");
-        
-        ArrayList<ArrayList> cardLists = db.readCards();
-        
-        cards = cardLists.get(0);
-        multicards = cardLists.get(1);
-
-        for(Card card : cards)
-        {
-            System.out.println(card);
-            for(Purchase p : card.getPurchases())
-            {
-                System.out.println(p.getPurchaseInfo());
-            }
-        }
-        
-        System.out.println("\n--MC--");
-        
-        for(MultiCard mc : multicards)
-        {
-            System.out.println(mc);
-            for(Purchase p : mc.getPurchases())
-            {
-                System.out.println(p.getPurchaseInfo());
-            }
-        }
-        
-        
-        
-        db.saveData(cards);
-        db.closeDatabase();
-    }
-    
-    // Read the save file, or create it if it does not exist
-    public static List<String> readSaveFile() throws IOException
-    {
-        // Create an absolute file path for the save file
-        Path path = FileSystems.getDefault().getPath("cards.txt");
-        path = path.toAbsolutePath();
-        // Create a new file object based on the path
-        File file = new File(path.toString(), "");
-        // If the file doesn't exist, make it
-        if(!file.exists())
-        {
-            file.createNewFile();
-        }
-        
-        // Try every line from the file, then close it
-        BufferedReader in = new BufferedReader(new FileReader(file));
-        
-        try
-        {
-            List<String> fileCards = new ArrayList<>();
-            String line = in.readLine();
-            while(line != null)
-            {
-                fileCards.add(line);
-                line = in.readLine();
-            }
-            return fileCards;
-        }
-        finally
-        {
-            in.close();
-        }
-    }
-    
-    // Parse the info from the save file
-    public static void parseFileInfo(List<String> fileCards)
-    {
-        // If the save file is not empty
-        if(!fileCards.isEmpty())
-        {
-           // Iterate over each line in the file if it has cards in it
-            for(String card : fileCards)
-            {
-                // Clean up the line and split it into a String array
-                card = card.trim();
-                String[] cardInfo = card.split(",");
-                // Check if the card is a BC or MC
-                if(cardInfo[0].equals("BC"))
-                {
-                    // Create new BasicCard object based on saved card info
-                    BasicCard tmp = new BasicCard(cardInfo[1], cardInfo[2]);
-                    tmp.addFunds(Double.parseDouble(cardInfo[3]));
-                    cards.add(tmp);
-                    
-                    // Check the amount of purchases made
-                    int purchasesMade = Integer.parseInt(cardInfo[4]);
-                    // Go to the next line/card if there are no purchases in it
-                    if(purchasesMade <= 0)
-                    {
-                        continue;
-                    }
-                    // Go through each purchase and add it to the card's purchases arraylist
-                    for(int i = 5; i <= purchasesMade*5; i+=5)
-                    {
-                        Purchase p = new Purchase(cardInfo[i], cardInfo[i+1], 
-                                cardInfo[i+2], Double.parseDouble(cardInfo[i+3]),
-                                cardInfo[i+4]);
-                        tmp.addPurchase(p);
-                    }
-                }
-                else if(cardInfo[0].equals("MC"))
-                {
-                    // Create new MultiCard object based on save card info
-                    MultiCard mc = new MultiCard(cardInfo[1], cardInfo[2]);
-                    
-                    // Check what currencies are in the card and add them to the card's currencies HashMap
-                    String[] currencies = {"AUD", "NZD", "USD", "CAD", "GBP", "EUR", "JPY"};
-                    int amountOfCurrencies = Integer.parseInt(cardInfo[3]);
-                    HashMap<String, Double> tmp = new HashMap<>();
-                    
-                    // Iterate over each currency stored in the saved record
-                    for(int i=4;i<4+(amountOfCurrencies*2); i+=2)
-                    {
-                        tmp.put(cardInfo[i], Double.parseDouble(cardInfo[i+1]));
-                    }
-                    
-                    // Set the current index for the card record
-                    int cardInfoIndex = 4+(amountOfCurrencies*2);
-                    
-                    // Set the multicard's balances and add it to the program lists
-                    mc.setBalancesMap(tmp);
-                    cards.add(mc);
-                    multicards.add(mc);
-                    
-                    // Add purchases to the card
-                    // Check the amount of purchases made
-                    int purchasesMade = Integer.parseInt(cardInfo[cardInfoIndex]);
-                    // Go to the next line/card if there are no purchases in it
-                    if(purchasesMade <= 0)
-                    {
-                        continue;
-                    }
-                    // Go through each purchase and add it to the card's purchases arraylist
-                    cardInfoIndex++;
-                    for(int i = 0; i < purchasesMade; i++)
-                    {
-                        Purchase p = new Purchase(cardInfo[cardInfoIndex], cardInfo[cardInfoIndex+1], 
-                                cardInfo[cardInfoIndex+2], Double.parseDouble(cardInfo[cardInfoIndex+3]),
-                                cardInfo[cardInfoIndex+4]);
-                        cardInfoIndex += 5;
-                        mc.addPurchase(p);
-                    }
-                }
-                else
-                {
-                    System.out.println("Error with card record. Skipping...");
-                }
-            } 
-        }
-    }
-    
-    // Write all info to the save file
-    public static void saveData() throws IOException
-    {
-        // Create an absolute file path for the save file
-        Path path = FileSystems.getDefault().getPath("cards.txt");
-        path = path.toAbsolutePath();
-        // Create a new file object based on the path
-        File file = new File(path.toString(), "");
-        // If the file doesn't exist, make it
-        if(!file.exists())
-        {
-            file.createNewFile();
-        }
-        
-        // Create the BufferedWriter to save the program data
-        BufferedWriter out = new BufferedWriter(new FileWriter(file));
-        
-        // Clear the file
-        out.write("");
-        
-        // Write each card and its purchases to the save file
-        for(Card card : cards)
-        {
-            // Add info relevant to whether the card is basic or multi to the record
-            String record = "";
-            if(card.isMulticard())
-            {
-                record += "MC";
-                record += String.format(",%s,%s", card.getID(), card.getName());
-                
-                // Get the currencies in the multicard and add them to the record
-                HashMap<String,Double> tmp = card.getTotalOfEachCurrency();
-                record += String.format(",%d", tmp.size());
-                for(HashMap.Entry<String,Double> item : tmp.entrySet())
-                {
-                    record += String.format(",%s,%.2f", item.getKey(), item.getValue());
-                }
-            }
-            else
-            {
-                record += "BC";
-                record += String.format(",%s,%s,%.2f", card.getID(), card.getName(), card.getBalance());
-                
-            }
-            
-            // Add the card's purchases to the record
-            record += String.format(",%d", card.getPurchases().size());
-            if(!card.getPurchases().isEmpty())
-            {
-                for(Purchase p : card.getPurchases())
-                {
-                    String purchase = String.format(",%s,%s,%s,%.2f,%s",
-                            p.getDate(), p.getCountry(), p.getCurrency(), 
-                            p.getAmount(), p.getDescription());
-                    record += purchase;
-                }
-            }
-            
-            // Write the record to the file
-            out.append(record);
-            out.newLine();
-        }
-        
-        // Close the file
-        out.close();
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

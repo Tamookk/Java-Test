@@ -37,7 +37,7 @@ public class Database
         
         // SQL to create the purchases table
         String purchasesSQL = "CREATE TABLE IF NOT EXISTS 'purchase' (" +
-                "id text PRIMARY KEY, cardnum text, " +
+                "id integer PRIMARY KEY, cardnum text, " +
                 "date text NOT NULL, location text NOT NULL, currency text " +
                 "NOT NULL, amount integer NOT NULL, desc text NOT NULL, " +
                 "FOREIGN KEY (cardnum) REFERENCES card(id));";
@@ -68,7 +68,7 @@ public class Database
         {
             // Grab the cards, create card objects, and add them to an arraylist
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM 'card';");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM 'card' ORDER BY id ASC;");
             
             while(rs.next())
             {
@@ -114,11 +114,13 @@ public class Database
         }
         
         String sql = "DELETE FROM card;";
+        String sql2 = "DELETE FROM purchase;";
         
         try
         {
             Statement stmt = conn.createStatement();
             stmt.execute(sql);
+            stmt.execute(sql2);
         }
         catch(SQLException e)
         {
@@ -167,6 +169,8 @@ public class Database
     // Save the card data to the database
     public void saveData(ArrayList<Card> cards)
     {
+        int purchaseNum = 0;
+        
         for(Card card : cards)
         {
             if(card.isMulticard())
@@ -316,6 +320,35 @@ public class Database
                 catch(SQLException e)
                 {
                     System.out.println("Could not save card.");
+                }
+            }
+            
+            // Add card purchases to the database
+            for(Purchase p : card.getPurchases())
+            {
+                String sql = "INSERT INTO purchase(id,cardnum,date,location,currency,amount,desc) " +
+                        "VALUES (?,?,?,?,?,?,?);";
+                
+                // Prepare and execute the statement
+                try
+                {
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    stmt.setInt(1, purchaseNum);
+                    stmt.setString(2, card.getID());
+                    stmt.setString(3, p.getDate());
+                    stmt.setString(4, p.getCountry());
+                    stmt.setString(5, p.getCurrency());
+                    stmt.setInt(6, (int)(p.getAmount() * 100));
+                    stmt.setString(7, p.getDescription());
+                    stmt.executeUpdate();
+                }
+                catch(SQLException e)
+                {
+                    System.out.println(e.getMessage());
+                }
+                finally
+                {
+                    purchaseNum++;
                 }
             }
         }
