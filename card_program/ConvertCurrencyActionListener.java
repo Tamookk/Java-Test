@@ -19,14 +19,19 @@ public class ConvertCurrencyActionListener implements MouseListener
         convertCurrencyCurList = curList;
     }
     
+    @Override
     public void mouseClicked(MouseEvent evt)
     {
         convertCurrencyButtonMouseClicked(evt);
     }
-
+    
+    @Override
     public void mouseEntered(MouseEvent evt) {}
+    @Override
     public void mouseExited(MouseEvent evt) {}
+    @Override
     public void mousePressed(MouseEvent evt) {}
+    @Override
     public void mouseReleased(MouseEvent evt) {}
     
     // Convert currency
@@ -53,12 +58,12 @@ public class ConvertCurrencyActionListener implements MouseListener
         }
         
         // Try to convert the entered amount to a double
-        double amount = 0;
+        double amount;
         try
         {
             amount = Double.parseDouble(convertCurrencyTextField.getText());
         }
-        catch(Exception e)
+        catch(IllegalArgumentException e)
         {
             convertCurrencyLabel.setText("Amount entered not valid!");
             return;

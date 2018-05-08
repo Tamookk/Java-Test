@@ -3,7 +3,6 @@ package card_program;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
-import java.sql.*;
 
 public class GUI extends JFrame
 {
@@ -46,6 +45,7 @@ public class GUI extends JFrame
         // Window closed event listener, program saves data once it has been closed
         addWindowListener(new java.awt.event.WindowAdapter()
         {
+            @Override
             public void windowClosed(java.awt.event.WindowEvent evt)
             {
                 formWindowClosed(evt);
@@ -214,15 +214,11 @@ public class GUI extends JFrame
         
         /* Create and display the form */
         GUI gui = new GUI();
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
-            public void run() {
-                gui.setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(()->{gui.setVisible(true);});
         
         // Close the GUI after the user exits the program
         gui.addComponentListener(new ComponentAdapter() {
+            @Override
             public void componentHidden(ComponentEvent e)
             {
                 ((JFrame)(e.getComponent())).dispose();

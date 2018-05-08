@@ -25,14 +25,19 @@ public class MakePurchaseActionListener implements MouseListener
         makePurchaseDescriptionTF = descField;
     }
     
+    @Override
     public void mouseClicked(MouseEvent evt)
     {
         makePurchaseButtonMouseClicked(evt);
     }
 
+    @Override
     public void mouseEntered(MouseEvent evt) {}
+    @Override
     public void mouseExited(MouseEvent evt) {}
+    @Override
     public void mousePressed(MouseEvent evt) {}
+    @Override
     public void mouseReleased(MouseEvent evt) {}
     
     private void makePurchaseButtonMouseClicked(MouseEvent evt)
@@ -72,12 +77,12 @@ public class MakePurchaseActionListener implements MouseListener
         }
         
         // Try to convert the entered amount to a double
-        double amount = 0;
+        double amount;
         try
         {
             amount = Double.parseDouble(makePurchaseAmountTF.getText());
         }
-        catch(Exception e)
+        catch(IllegalArgumentException e)
         {
             makePurchaseLabel.setText("Amount entered not valid!");
             return;

@@ -17,14 +17,19 @@ public class LoadCardActionListener implements MouseListener
         loadCardTextField = field;
     }
     
+    @Override
     public void mouseClicked(MouseEvent evt)
     {
         createCardButtonMouseClicked(evt);
     }
     
+    @Override
     public void mouseEntered(MouseEvent evt) {}
+    @Override
     public void mouseExited(MouseEvent evt) {}
+    @Override
     public void mousePressed(MouseEvent evt) {}
+    @Override
     public void mouseReleased(MouseEvent evt) {}
     
     // Method to add funds to a card when button clicked
@@ -47,12 +52,12 @@ public class LoadCardActionListener implements MouseListener
         }
         
         // Try to convert the entered amount to a double
-        double amount = 0;
+        double amount;
         try
         {
             amount = Double.parseDouble(loadCardTextField.getText());
         }
-        catch(Exception e)
+        catch(IllegalArgumentException e)
         {
             loadCardLabel.setText("Amount entered not valid!");
             return;

@@ -20,14 +20,19 @@ public class PurchaseHistoryActionListener implements MouseListener
         purchaseHistoryTextArea = area;
     }
     
+    @Override
     public void mouseClicked(MouseEvent evt)
     {
         purchaseHistoryButtonMouseClicked(evt);
     }
 
+    @Override
     public void mouseEntered(MouseEvent evt) {}
+    @Override
     public void mouseExited(MouseEvent evt) {}
+    @Override
     public void mousePressed(MouseEvent evt) {}
+    @Override
     public void mouseReleased(MouseEvent evt) {}
     
     // Get the purchase history for a given card

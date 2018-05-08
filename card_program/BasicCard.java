@@ -15,22 +15,25 @@ public class BasicCard extends Card
     }
     
     // Add funds to the card in AUD
+    @Override
     public void addFunds(double amount)
     {
         balance += amount;
     }
     
     // Get the card balance
+    @Override
     public double getBalance()
     {
         return balance;
     }
     
     // Make a purchase
+    @Override
     public boolean makePurchase(String date, String location, String currency, double amount, String description)
     {
         // Check if the currency is foreign.
-        if(currency != "AUD")
+        if(!currency.equals("AUD"))
         {
             // Check which currency the purchase is being made in
             switch(currency)
@@ -161,6 +164,7 @@ public class BasicCard extends Card
     }
 
     // Get the total spent in each currency for the card
+    @Override
     public HashMap<String,Double> getTotalOfEachCurrency()
     {
         // Create & return temp HashMap with key AUD and value balance
@@ -170,12 +174,14 @@ public class BasicCard extends Card
     }
     
     // Return the card's list of purchases
+    @Override
     public ArrayList<Purchase> getPurchases()
     {
         return purchases;
     }
 
     // Get the card's transaction history
+    @Override
     public void getTransactionHistory()
     {
         // Check if any transactions have actually been made
@@ -186,21 +192,20 @@ public class BasicCard extends Card
         }
 
         // Get the info for each purchase
-        for(Purchase p : purchases)
-        {
-            System.out.println(p.getPurchaseInfo());
-        }
+        purchases.forEach(p->{System.out.println(p.getPurchaseInfo());});
 
         // Print out the user's final balance
         System.out.printf("Final Balance: $%.2f AUD\n", this.getBalance());
     }
 
     // Get number of active currencies on the card
+    @Override
     public int numOfActiveCurrencies()
     {
         return balance != 0 ? 1 : 0;
     }
     
     // Return that the card is not a multicard
+    @Override
     public boolean isMulticard(){ return false; }
 }

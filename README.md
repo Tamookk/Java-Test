@@ -34,6 +34,11 @@ Honestly the thing isn't done and doesn't work properly, and I assume that if yo
 
 ## Changelog
 
+### 08-05-2018
+* Changed some for loops into lambda expressions.
+
+* Added the @Override annotation to all methods that override parent class methods.
+
 ### 30-04-2018
 * Whew, this is a big one.
 

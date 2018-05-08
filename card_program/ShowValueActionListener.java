@@ -18,14 +18,19 @@ public class ShowValueActionListener implements MouseListener
         showValueTextArea = area;
     }
     
+    @Override
     public void mouseClicked(MouseEvent evt)
     {
         showValueButtonMouseClicked(evt);
     }
 
+    @Override
     public void mouseEntered(MouseEvent evt) {}
+    @Override
     public void mouseExited(MouseEvent evt) {}
+    @Override
     public void mousePressed(MouseEvent evt) {}
+    @Override
     public void mouseReleased(MouseEvent evt) {}
     
     // Get the total value of the card selected

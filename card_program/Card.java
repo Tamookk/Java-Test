@@ -40,6 +40,7 @@ public abstract class Card implements Comparable<Card>
     public abstract boolean isMulticard();
     
     // Return the card's ID and name
+    @Override
     public String toString(){ return id + " | " + name; }
     
     // Return the card's ID
@@ -49,6 +50,7 @@ public abstract class Card implements Comparable<Card>
     public String getName() { return name; }
     
     // Method needed to implement comparable in parent class
+    @Override
     public int compareTo(Card other)
     {
         if(other.getBalance() == this.getBalance())

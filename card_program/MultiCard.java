@@ -38,12 +38,14 @@ public class MultiCard extends Card
     }
     
     // Add funds to the card in AUD
+    @Override
     public void addFunds(double amount)
     {
         balances.put("AUD", balances.get("AUD") + amount);
     }
     
     // Get the card balance
+    @Override
     public double getBalance()
     {
         // Variable for the total card value
@@ -83,6 +85,7 @@ public class MultiCard extends Card
     }
 
     // Make a purchase
+    @Override
     public boolean makePurchase(String date, String loc, String cur, double amt, String des)
     {
         // Find the index of the currency to be converted
@@ -111,6 +114,7 @@ public class MultiCard extends Card
     }
 
     // Get the total amount spent in each currency for the card
+    @Override
     public HashMap<String,Double> getTotalOfEachCurrency()
     {
         // Return the balances in the card
@@ -118,12 +122,14 @@ public class MultiCard extends Card
     }
 
     // Return a List of the card's purchases
+    @Override
     public ArrayList<Purchase> getPurchases()
     {
         return purchases;
     }
 
     // Get the card's transaction history
+    @Override
     public void getTransactionHistory()
     {
         // Check if any transactions have actually been made
@@ -134,16 +140,14 @@ public class MultiCard extends Card
         }
 
         // Get the info for each purchase
-        for(Purchase p : purchases)
-        {
-            System.out.println(p.getPurchaseInfo());
-        }
+        purchases.forEach(p->{System.out.println(p.getPurchaseInfo());});
 
         // Print out the user's final balance
         System.out.printf("Final Balance: $%.2f AUD", this.getBalance());
     }
 
     // Get number of active currencies on the card
+    @Override
     public int numOfActiveCurrencies()
     {
         // Return the number of active currencies
@@ -157,5 +161,6 @@ public class MultiCard extends Card
     }
     
     // Return that the card is a multicard
+    @Override
     public boolean isMulticard(){ return true; }
 }

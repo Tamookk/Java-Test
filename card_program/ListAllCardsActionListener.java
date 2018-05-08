@@ -18,14 +18,19 @@ public class ListAllCardsActionListener implements MouseListener
         listCardsTextArea = area;
     }
     
+    @Override
     public void mouseClicked(MouseEvent evt)
     {
         listCardsButtonMouseClicked(evt);
     }
 
+    @Override
     public void mouseEntered(MouseEvent evt) {}
+    @Override
     public void mouseExited(MouseEvent evt) {}
+    @Override
     public void mousePressed(MouseEvent evt) {}
+    @Override
     public void mouseReleased(MouseEvent evt) {}
     
     // List all cards by the selected order

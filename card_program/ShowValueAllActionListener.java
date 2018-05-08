@@ -15,14 +15,19 @@ public class ShowValueAllActionListener implements MouseListener
         showValueAllLabel2 = label2;
     }
     
+    @Override
     public void mouseClicked(MouseEvent evt)
     {
         showValueAllButtonMouseClicked(evt);
     }
 
+    @Override
     public void mouseEntered(MouseEvent evt) {}
+    @Override
     public void mouseExited(MouseEvent evt) {}
+    @Override
     public void mousePressed(MouseEvent evt) {}
+    @Override
     public void mouseReleased(MouseEvent evt) {}
     
     // Get the total value for all cards

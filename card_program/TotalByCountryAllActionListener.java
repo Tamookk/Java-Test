@@ -16,14 +16,19 @@ public class TotalByCountryAllActionListener implements MouseListener
         totalByCountryAllTextArea = area;
     }
     
+    @Override
     public void mouseClicked(MouseEvent evt)
     {
         totalByCountryAllButtonMouseClicked(evt);
     }
 
+    @Override
     public void mouseEntered(MouseEvent evt) {}
+    @Override
     public void mouseExited(MouseEvent evt) {}
+    @Override
     public void mousePressed(MouseEvent evt) {}
+    @Override
     public void mouseReleased(MouseEvent evt) {}
     
     // See total spent by country for all cards
@@ -37,7 +42,7 @@ public class TotalByCountryAllActionListener implements MouseListener
         }
         
         // Create variables needed for function
-        ArrayList<String> countriesSpentIn = new ArrayList<String>();
+        ArrayList<String> countriesSpentIn = new ArrayList<>();
         ArrayList<Purchase> temp;
         double[] amountSpentInCountry = new double[10];
         

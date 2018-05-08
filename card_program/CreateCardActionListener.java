@@ -17,14 +17,19 @@ public class CreateCardActionListener implements MouseListener
         createCardTextField = field;
     }
 
+    @Override
     public void mouseClicked(MouseEvent evt)
     {
         createCardButtonMouseClicked(evt);
     }
 
+    @Override
     public void mouseEntered(MouseEvent evt) {}
+    @Override
     public void mouseExited(MouseEvent evt) {}
+    @Override
     public void mousePressed(MouseEvent evt) {}
+    @Override
     public void mouseReleased(MouseEvent evt) {}
 
     // Method to create a card when button clicked
@@ -75,9 +80,6 @@ public class CreateCardActionListener implements MouseListener
     // Trigger each class's respective methods when the card list is updated
     private void cardListUpdated()
     {
-        for(CardListListener listener : cardListListeners)
-        {
-            listener.updateList();
-        }
+        cardListListeners.forEach(listener->{listener.updateList();});
     }
 }

@@ -59,6 +59,7 @@ public class LoadCard extends JPanel implements CardListListener
         );
     }
     
+    @Override
     public void updateList()
     {
         // Create a temporary list with all cards in it
@@ -66,10 +67,7 @@ public class LoadCard extends JPanel implements CardListListener
         temp.add("Select Card...");
         
         // Add each card to the temp list
-        for(Card card : cards)
-        {
-            temp.add(card.toString());
-        }
+        cards.forEach(card->{temp.add(card.toString());});
         
         // Set the list to the temp list of cards
         loadCardList.setModel(new DefaultComboBoxModel(temp.toArray()));

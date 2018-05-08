@@ -18,14 +18,19 @@ public class TotalByCountrySingleActionListener implements MouseListener
         totalByCountryTextArea = area;
     }
     
+    @Override
     public void mouseClicked(MouseEvent evt)
     {
         totalByCountryButtonMouseClicked(evt);
     }
 
+    @Override
     public void mouseEntered(MouseEvent evt) {}
+    @Override
     public void mouseExited(MouseEvent evt) {}
+    @Override
     public void mousePressed(MouseEvent evt) {}
+    @Override
     public void mouseReleased(MouseEvent evt) {}
     
     // Get the total spent by country for a given card

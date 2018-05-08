@@ -16,14 +16,19 @@ public class TotalByCurrencyAllActionListener implements MouseListener
         totalByCurrencyAllTextArea = area;
     }
     
+    @Override
     public void mouseClicked(MouseEvent evt)
     {
         totalByCurrencyAllButtonMouseClicked(evt);
     }
 
+    @Override
     public void mouseEntered(MouseEvent evt) {}
+    @Override
     public void mouseExited(MouseEvent evt) {}
+    @Override
     public void mousePressed(MouseEvent evt) {}
+    @Override
     public void mouseReleased(MouseEvent evt) {}
     
     // Get tht total values of each currency in all cards
